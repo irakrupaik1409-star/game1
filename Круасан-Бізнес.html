@@ -1,0 +1,334 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Круасан-Бізнес</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: a single working column — decisions panel, then a vertical ledger of five years, then the verdict. */
+:root{
+  --bg:#EDF1F7; --surface:#FFFFFF; --ink:#12203A; --muted:#55627A; --line:#D5DDEA;
+  --blue:#2459C6; --blue-soft:#DCE6FA; --butter:#F2B632; --butter-ink:#3A2A00;
+  --good:#1E8A55; --bad:#C0392B; --good-soft:#DDF2E6; --bad-soft:#F8DEDA;
+  --f-display:'Unbounded', 'Trebuchet MS', sans-serif;
+  --f-body:'Manrope', 'Segoe UI', Arial, sans-serif;
+  --f-mono:'JetBrains Mono', 'Courier New', monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1626; --surface:#16213A; --ink:#E8EEF8; --muted:#9AA8C2; --line:#2A3858;
+  --blue:#7FA6FF; --blue-soft:#1F3160; --butter:#F5C45A; --butter-ink:#2A1E00;
+  --good:#5BD394; --bad:#FF8A7A; --good-soft:#15392A; --bad-soft:#44201C; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1626; --surface:#16213A; --ink:#E8EEF8; --muted:#9AA8C2; --line:#2A3858;
+  --blue:#7FA6FF; --blue-soft:#1F3160; --butter:#F5C45A; --butter-ink:#2A1E00;
+  --good:#5BD394; --bad:#FF8A7A; --good-soft:#15392A; --bad-soft:#44201C; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5;padding:24px 16px 64px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(28px,5vw,44px);font-weight:700}
+h2{font-size:22px;font-weight:700}
+h3{font-size:16px;font-weight:500}
+p{margin:0}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--blue)}
+header{display:flex;flex-direction:column;gap:10px}
+header .lead{color:var(--muted);max-width:62ch}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.rule{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.rule b{font-family:var(--f-mono);font-size:20px}
+.rule span{color:var(--muted);font-size:14px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:20px}
+.choice{display:grid;grid-template-columns:220px 1fr;gap:16px;align-items:start;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+.choice:last-of-type{border-bottom:none;padding-bottom:0}
+.choice .q{display:flex;flex-direction:column;gap:4px;min-width:0}
+.choice .q small{color:var(--muted);font-size:13px}
+.opts{display:flex;flex-wrap:wrap;gap:8px;min-width:0}
+.opt{font:inherit;cursor:pointer;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;padding:10px 14px;text-align:left;display:flex;flex-direction:column;gap:2px;min-width:120px;flex:1 1 150px;transition:border-color .15s,background .15s}
+.opt .t{font-weight:700}
+.opt .c{font-size:13px;color:var(--muted)}
+.opt:hover{border-color:var(--blue)}
+.opt:focus-visible,.btn:focus-visible{outline:3px solid var(--butter);outline-offset:2px}
+.opt[aria-pressed="true"]{border-color:var(--blue);background:var(--blue-soft)}
+.opt.baker{flex:0 1 auto;min-width:74px;align-items:center;text-align:center}
+.opt.baker .t{font-family:var(--f-mono);font-size:20px}
+.summary{display:flex;flex-wrap:wrap;gap:10px 24px;align-items:center;justify-content:space-between;background:var(--bg);border-radius:12px;padding:14px 16px}
+.summary .facts{display:flex;flex-wrap:wrap;gap:8px 22px}
+.summary .facts div{display:flex;flex-direction:column}
+.summary .facts span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.btn{font:inherit;font-weight:700;cursor:pointer;border:none;border-radius:999px;padding:13px 24px;background:var(--butter);color:var(--butter-ink);font-size:16px}
+.btn.secondary{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}
+.btn:disabled{opacity:.45;cursor:default}
+.team{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.team label{font-weight:700}
+.team input{font:inherit;padding:9px 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);min-width:0;flex:1 1 200px;max-width:320px}
+/* game */
+.scoreboard{display:flex;flex-wrap:wrap;gap:12px;align-items:stretch}
+.score{flex:1 1 180px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.score span{display:block;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.score b{font-family:var(--f-mono);font-size:28px}
+.pick{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:13px;font-weight:700;padding:5px 10px;border-radius:999px;background:var(--blue-soft);color:var(--ink)}
+.years{display:flex;flex-direction:column;gap:14px}
+.year{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px;display:grid;grid-template-columns:120px 1fr 170px;gap:18px;align-items:start}
+.year.locked{opacity:.55;border-style:dashed}
+.year .num{font-family:var(--f-display);font-size:14px;color:var(--muted)}
+.year .num b{display:block;font-size:34px;color:var(--ink);line-height:1.1}
+.year .story{display:flex;flex-direction:column;gap:8px;min-width:0}
+.year .story h3{font-size:17px}
+.year .story .note{color:var(--muted);font-size:14px}
+.calc{font-family:var(--f-mono);font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 12px}
+.calc i{font-style:normal;color:var(--ink)}
+.flag{display:inline-block;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;margin-right:6px}
+.flag.bad{background:var(--bad-soft);color:var(--bad)}
+.flag.good{background:var(--good-soft);color:var(--good)}
+.year .res{text-align:right;display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.year .res .p{font-family:var(--f-mono);font-size:28px;font-weight:700}
+.pos{color:var(--good)} .neg{color:var(--bad)}
+.bar{height:8px;border-radius:4px;background:var(--line);width:100%;position:relative;overflow:hidden}
+.bar i{position:absolute;top:0;bottom:0;left:0;background:var(--blue);border-radius:4px}
+.demand{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:14px}
+.cap{flex:1 1 200px;min-width:0}
+.cap .bar{height:14px}
+.cap .bar i.sold{background:var(--blue)}
+.cap .bar i.lost{background:repeating-linear-gradient(45deg,var(--bad) 0 4px,transparent 4px 8px);opacity:.7}
+.legend{font-size:12px;color:var(--muted)}
+.fade{animation:in .45s ease both}
+@keyframes in{from{transform:translateY(8px);opacity:.3}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.fade{animation:none}}
+.verdict{background:var(--surface);border:2px solid var(--blue);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:16px}
+.verdict .big{font-family:var(--f-mono);font-size:clamp(36px,7vw,56px);font-weight:700}
+.lessons{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
+.lessons li{padding:12px 14px;border-radius:12px;background:var(--bg);display:flex;gap:10px;align-items:flex-start}
+.lessons li .d{font-family:var(--f-mono);font-weight:700;white-space:nowrap}
+.history{width:100%;border-collapse:collapse;font-size:14px}
+.history th,.history td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+.history td.n{font-family:var(--f-mono);text-align:right}
+.tablewrap{overflow-x:auto}
+.actions{display:flex;flex-wrap:wrap;gap:10px}
+@media (max-width:720px){
+  .choice{grid-template-columns:1fr}
+  .year{grid-template-columns:1fr;gap:10px}
+  .year .res{text-align:left;align-items:flex-start}
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Економічна гра · аналіз витрат</div>
+    <h1>Круасан-Бізнес: 5 років</h1>
+    <p class="lead">Ви відкриваєте пекарню. Ухваліть чотири рішення, а потім подивіться, як минули п'ять років. Скільки круасанів захочуть купити клієнти, заздалегідь невідомо: прогноз від 20 до 40 тис. на рік.</p>
+  </header>
+
+  <section class="rules" aria-label="Правила">
+    <div class="rule"><b>30 грн</b><span>маржа з кожного проданого круасана</span></div>
+    <div class="rule"><b>10 тис. шт.</b><span>стільки на рік пече один пекар за зарплату 120 тис. грн</span></div>
+    <div class="rule"><b>Попит &gt; потужність</b><span>зайві клієнти йдуть до конкурентів, ці гроші ви не заробляєте</span></div>
+    <div class="rule"><b>Попит &lt; потужність</b><span>зарплату пекарям однаково платите повністю</span></div>
+  </section>
+
+  <section class="panel" id="setup" aria-label="Рішення команди">
+    <div class="team">
+      <label for="teamName">Команда</label>
+      <input id="teamName" type="text" placeholder="Назва команди" maxlength="40">
+    </div>
+
+    <div class="choice">
+      <div class="q"><h3>1. Скільки пекарів?</h3><small>120 тис. грн на рік кожен · фіксовані витрати</small></div>
+      <div class="opts" id="opt-bakers"></div>
+    </div>
+    <div class="choice">
+      <div class="q"><h3>2. Склад</h3><small>де зберігаєте борошно, масло й готові круасани</small></div>
+      <div class="opts" id="opt-wh"></div>
+    </div>
+    <div class="choice">
+      <div class="q"><h3>3. Генератор</h3><small>страховка на випадок відключень світла</small></div>
+      <div class="opts" id="opt-gen"></div>
+    </div>
+    <div class="choice">
+      <div class="q"><h3>4. Доставка клієнтам</h3><small>виробляти послугу самим чи купити в агрегатора</small></div>
+      <div class="opts" id="opt-dl"></div>
+    </div>
+
+    <div class="summary">
+      <div class="facts">
+        <div><span>Можете спекти</span><b class="mono" id="sumCap"></b></div>
+        <div><span>Фіксовані витрати на рік</span><b class="mono" id="sumFixed"></b></div>
+        <div><span>Змінні за 1 круасан</span><b class="mono" id="sumVar"></b></div>
+      </div>
+      <button class="btn" id="startBtn" type="button">Почати 5 років</button>
+    </div>
+  </section>
+
+  <section id="game" hidden aria-live="polite">
+    <div class="wrap" style="gap:18px;padding:0">
+      <div class="scoreboard">
+        <div class="score"><span>Прибуток разом</span><b id="total">0</b></div>
+        <div class="score"><span>Рік</span><b id="yearNow">0 / 5</b></div>
+        <div class="score" style="flex:2 1 260px"><span>Ваш вибір</span><div class="pick" id="pickChips" style="margin-top:6px"></div></div>
+      </div>
+      <div class="years" id="years"></div>
+      <div class="actions">
+        <button class="btn" id="nextBtn" type="button">Відкрити рік 1</button>
+        <button class="btn secondary" id="resetBtn" type="button">Змінити рішення</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="verdict" id="verdict" hidden></section>
+
+  <section class="panel" id="historyBox" hidden>
+    <h2>Результати команд на цьому пристрої</h2>
+    <div class="tablewrap"><table class="history"><thead><tr><th>#</th><th>Команда</th><th>Вибір</th><th style="text-align:right">Прибуток, тис. грн</th></tr></thead><tbody id="historyBody"></tbody></table></div>
+    <div class="actions"><button class="btn secondary" id="clearHist" type="button">Очистити таблицю</button></div>
+  </section>
+</div>
+
+<script>
+const DEMAND=[20,30,35,25,40];
+const EVENTS=[
+  {t:'Вас ще мало хто знає', n:'Пекарня тільки відкрилась, клієнти придивляються.'},
+  {t:'Круасани стали вірусними в TikTok!', n:'Блогерка зняла відео, зранку черги.'},
+  {t:'Зима відключень', n:'Три місяці графіків. Без генератора пекарня стоїть частину днів: попит, який ви можете обслужити, падає до 25 тис.'},
+  {t:'Важкий рік', n:'Люди економлять, частина виїхала. Агрегатор підняв комісію з 3 до 5 грн, бо знає, що ресторани від нього залежать.'},
+  {t:'Замовлення від IT-офісів', n:'Мережа офісів замовляє круасани на сніданки. Комісія агрегатора й далі 5 грн.'}
+];
+const OPTS={
+  bakers:[1,2,3,4,5].map(n=>({v:n,t:String(n),c:(n*10)+' тис. шт.'})),
+  wh:[{v:'near',t:'Близько, у місті',c:'150 тис. на рік'},{v:'far',t:'Далеко, за містом',c:'50 тис. + 3 грн за круасан'}],
+  gen:[{v:true,t:'Купити',c:'100 тис. один раз'},{v:false,t:'Не купувати',c:'0 грн'}],
+  dl:[{v:'agg',t:'Агрегатор (Glovo)',c:'3 грн комісії за круасан'},{v:'own',t:'Власний кур’єр',c:'100 тис. на рік'}]
+};
+const LABEL={near:'склад близько',far:'склад далеко',agg:'агрегатор',own:'власний кур’єр'};
+let state={bakers:2,wh:'near',gen:false,dl:'agg'};
+let shown=0, result=null;
+
+function simulate(s){
+  const cap=s.bakers*10; let cum=0; const rows=[];
+  DEMAND.forEach((d0,y)=>{
+    const d=(y===2&&!s.gen)?25:d0;
+    const sold=Math.min(d,cap);
+    const revenue=sold*30, wages=s.bakers*120;
+    const wh=s.wh==='near'?150:50+3*sold;
+    const rate=y<3?3:5;
+    const dl=s.dl==='agg'?rate*sold:100;
+    const gen=(s.gen&&y===0)?100:0;
+    const profit=revenue-wages-wh-dl-gen; cum+=profit;
+    rows.push({y,d0,d,cap,sold,lost:Math.max(0,d-cap),idle:Math.max(0,cap-d),revenue,wages,wh,dl,rate,gen,profit,cum});
+  });
+  return {rows,total:cum};
+}
+function allCombos(){const out=[];for(const b of [1,2,3,4,5])for(const w of ['near','far'])for(const g of [true,false])for(const d of ['agg','own']){const s={bakers:b,wh:w,gen:g,dl:d};out.push({s,total:simulate(s).total});}return out;}
+const ALL=allCombos().sort((a,b)=>b.total-a.total);
+const fmt=n=>(n>0?'+':n<0?'−':'')+Math.abs(n).toLocaleString('uk-UA');
+const plain=n=>(n<0?'−':'')+Math.abs(n).toLocaleString('uk-UA');
+const pickText=s=>`${s.bakers} пек. · ${LABEL[s.wh]} · ${s.gen?'генератор':'без генератора'} · ${LABEL[s.dl]}`;
+
+function renderOpts(){
+  for(const key of ['bakers','wh','gen','dl']){
+    const box=document.getElementById('opt-'+key); box.innerHTML='';
+    OPTS[key].forEach(o=>{
+      const b=document.createElement('button'); b.type='button'; b.className='opt'+(key==='bakers'?' baker':'');
+      b.setAttribute('aria-pressed',String(state[key]===o.v));
+      b.innerHTML=`<span class="t">${o.t}</span><span class="c">${o.c}</span>`;
+      b.onclick=()=>{state[key]=o.v;renderOpts();};
+      box.appendChild(b);
+    });
+  }
+  const fixed=state.bakers*120+(state.wh==='near'?150:50)+(state.dl==='own'?100:0);
+  const v=(state.wh==='far'?3:0)+(state.dl==='agg'?3:0);
+  document.getElementById('sumCap').textContent=state.bakers*10+' тис. шт.';
+  document.getElementById('sumFixed').textContent=fixed+' тис. грн'+(state.gen?' + 100 разово':'');
+  document.getElementById('sumVar').textContent=v?v+' грн':'0 грн';
+}
+
+function yearCard(r,open){
+  const el=document.createElement('article'); el.className='year'+(open?' fade':' locked');
+  if(!open){el.innerHTML=`<div class="num">Рік<b>${r.y+1}</b></div><div class="story"><h3>🔒 Ще не відомо</h3><p class="note">Попит відкриється, коли настане цей рік.</p></div><div class="res"></div>`;return el;}
+  const ev=EVENTS[r.y];
+  const flags=[];
+  if(r.lost>0) flags.push(`<span class="flag bad">втрачено ${r.lost} тис. клієнтів</span>`);
+  if(r.idle>0) flags.push(`<span class="flag bad">пекарі простоюють: ${r.idle} тис. шт.</span>`);
+  if(r.y===2) flags.push(state.gen?'<span class="flag good">генератор врятував продажі</span>':'<span class="flag bad">без генератора</span>');
+  if(r.y===3&&state.dl==='own') flags.push('<span class="flag good">комісія вас не зачепила</span>');
+  if(!r.lost&&!r.idle&&r.y!==2) flags.push('<span class="flag good">потужність = попит</span>');
+  const soldPct=Math.min(100,r.sold/Math.max(r.d,r.cap)*100), lostPct=r.lost/Math.max(r.d,r.cap)*100;
+  el.innerHTML=`
+   <div class="num">Рік<b>${r.y+1}</b></div>
+   <div class="story">
+     <h3>${ev.t}</h3>
+     <p class="note">${ev.n}</p>
+     <div class="demand"><span>Попит <b class="mono">${r.d}</b> · Можете спекти <b class="mono">${r.cap}</b> · Продано <b class="mono">${r.sold}</b> тис.</span>
+       <div class="cap"><div class="bar" role="img" aria-label="Продано ${r.sold} з попиту ${r.d}"><i class="sold" style="width:${soldPct}%"></i><i class="lost" style="left:${soldPct}%;width:${lostPct}%"></i></div></div></div>
+     <div>${flags.join('')}</div>
+     <div class="calc"><span>дохід <i>${r.sold}×30 = ${r.revenue}</i></span><span>зарплата <i>−${r.wages}</i></span><span>склад <i>−${r.wh}</i></span><span>доставка <i>−${r.dl}</i></span>${r.gen?`<span>генератор <i>−${r.gen}</i></span>`:''}</div>
+   </div>
+   <div class="res"><span class="legend">прибуток за рік</span><span class="p ${r.profit>=0?'pos':'neg'}">${fmt(r.profit)}</span><span class="legend">разом: <b class="mono">${plain(r.cum)}</b></span></div>`;
+  return el;
+}
+
+function renderGame(){
+  const box=document.getElementById('years'); box.innerHTML='';
+  result.rows.forEach((r,i)=>box.appendChild(yearCard(r,i<shown)));
+  const cum=shown?result.rows[shown-1].cum:0;
+  const t=document.getElementById('total'); t.textContent=plain(cum); t.className=cum>=0?'pos':'neg';
+  document.getElementById('yearNow').textContent=shown+' / 5';
+  const nb=document.getElementById('nextBtn');
+  nb.hidden=shown>=5; nb.textContent='Відкрити рік '+(shown+1);
+  document.getElementById('pickChips').innerHTML=pickText(state).split(' · ').map(x=>`<span class="chip">${x}</span>`).join('');
+}
+
+function alt(changes){return simulate({...state,...changes}).total;}
+function renderVerdict(){
+  const me=result.total, rank=1+ALL.filter(a=>a.total>me).length, best=ALL[0];
+  const lessons=[];
+  // bakers
+  let bestN=state.bakers,bestV=me; for(const n of [1,2,3,4,5]){const v=alt({bakers:n}); if(v>bestV){bestV=v;bestN=n;}}
+  const lost=result.rows.reduce((a,r)=>a+r.lost,0), idle=result.rows.reduce((a,r)=>a+r.idle,0);
+  if(bestN>state.bakers) lessons.push([fmt(bestV-me),`Пекарів замало. За 5 років до конкурентів пішло ${lost} тис. клієнтів. З ${bestN} пекарями ви заробили б більше: недоінвестування теж коштує грошей.`]);
+  else if(bestN<state.bakers) lessons.push([fmt(bestV-me),`Пекарів забагато. Сумарно ${idle} тис. шт. потужності простоювали, а зарплата фіксована. З ${bestN} пекарями результат був би кращим.`]);
+  else lessons.push(['✓',`Кількість пекарів оптимальна для цього сценарію: потужність найкраще відповідала реальному попиту.`]);
+  const whAlt=alt({wh:state.wh==='near'?'far':'near'});
+  lessons.push([whAlt>me?fmt(whAlt-me):'✓', whAlt>me?`Склад ${state.wh==='near'?'далеко':'близько'} дав би більше. ${state.wh==='near'?'При ваших обсягах змінні 3 грн за круасан виходять дешевше за фіксовані 150 тис.':'При ваших обсягах фіксована оренда вигідніша за доставку з-за міста.'}`:`Склад обрано вдало: при ваших обсягах продажів це дешевший варіант.`]);
+  const gAlt=alt({gen:!state.gen});
+  lessons.push([gAlt>me?fmt(gAlt-me):'✓', state.gen?(gAlt>me?`Генератор не окупився: ваша потужність і так була меншою за попит у зиму відключень.`:`Генератор окупився: у 3-му році він зберіг продажі. Це страховка від ризику.`):(gAlt>me?`Генератор окупився б: у 3-му році без нього ви втратили частину продажів.`:`Без генератора ви нічого не втратили: ваша потужність і так була малою.`)]);
+  const dAlt=alt({dl:state.dl==='agg'?'own':'agg'});
+  lessons.push([dAlt>me?fmt(dAlt-me):'✓', state.dl==='agg'?(dAlt>me?`Власний кур'єр був би вигіднішим. Агрегатор підняв комісію, бо ви від нього залежали (hold-up), а при великих обсягах фіксовані 100 тис. дешевші за комісію.`:`Агрегатор виправдав себе: при ваших обсягах комісія дешевша за власного кур'єра.`):(dAlt>me?`Агрегатор був би дешевшим: при ваших невеликих обсягах змінна комісія вигідніша за фіксовані 100 тис.`:`Власний кур'єр виправдав себе, а підвищення комісії агрегатора вас не зачепило.`)]);
+  const v=document.getElementById('verdict');
+  const firstYearRank=1+ALL.filter(a=>simulate(a.s).rows[0].profit>result.rows[0].profit).length;
+  v.innerHTML=`
+    <div class="eyebrow">Підсумок 5 років${teamName()?' · '+esc(teamName()):''}</div>
+    <div class="big ${me>=0?'pos':'neg'}">${plain(me)} тис. грн</div>
+    <p><b>Місце ${rank} з ${ALL.length}</b> можливих стратегій. ${rank===1?'Це найкращий можливий результат!':`Найкраща стратегія: <b>${pickText(best.s)}</b> (${plain(best.total)} тис. грн).`} Після першого року ви були на ${firstYearRank}-му місці${firstYearRank>rank+5?': інвестиції окупились згодом.':'.'}</p>
+    <h2>Що вплинуло на результат</h2>
+    <ul class="lessons">${lessons.map(l=>`<li><span class="d ${l[0]==='✓'?'pos':'neg'}">${l[0]==='✓'?'✓':l[0].replace('+','−')}</span><span>${l[1]}</span></li>`).join('')}</ul>
+    <p class="legend">Червона цифра показує, скільки тис. грн ви недоотримали через це рішення порівняно з іншим варіантом (за незмінних інших рішень). 200 тис., витрачених на ремонт до початку гри, ні на що не вплинули: це безповоротні витрати.</p>
+    <div class="actions"><button class="btn" id="againBtn" type="button">Зіграти ще раз</button></div>`;
+  v.hidden=false;
+  document.getElementById('againBtn').onclick=reset;
+  saveHistory(me);
+}
+function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function teamName(){return document.getElementById('teamName').value.trim();}
+
+function loadHist(){try{return JSON.parse(localStorage.getItem('croissant-history')||'[]');}catch(e){return [];}}
+function saveHistory(total){
+  const h=loadHist(); h.push({team:teamName()||'Команда '+(h.length+1),pick:pickText(state),total});
+  try{localStorage.setItem('croissant-history',JSON.stringify(h));}catch(e){}
+  renderHistory(h);
+}
+function renderHistory(h=loadHist()){
+  const box=document.getElementById('historyBox'); if(!h.length){box.hidden=true;return;}
+  box.hidden=false;
+  document.getElementById('historyBody').innerHTML=[...h].sort((a,b)=>b.total-a.total).map((r,i)=>`<tr><td>${i+1}</td><td>${esc(r.team)}</td><td>${esc(r.pick)}</td><td class="n ${r.total>=0?'pos':'neg'}">${plain(r.total)}</td></tr>`).join('');
+}
+
+function start(){result=simulate(state);shown=0;document.getElementById('setup').hidden=true;document.getElementById('game').hidden=false;document.getElementById('verdict').hidden=true;renderGame();document.getElementById('game').scrollIntoView({behavior:'smooth',block:'start'});}
+function reset(){document.getElementById('setup').hidden=false;document.getElementById('game').hidden=true;document.getElementById('verdict').hidden=true;renderOpts();window.scrollTo({top:0,behavior:'smooth'});}
+document.getElementById('startBtn').onclick=start;
+document.getElementById('resetBtn').onclick=reset;
+document.getElementById('nextBtn').onclick=()=>{shown++;renderGame();if(shown===5)renderVerdict();};
+document.getElementById('clearHist').onclick=()=>{try{localStorage.removeItem('croissant-history');}catch(e){}renderHistory([]);};
+renderOpts();renderHistory();
+</script>
+
+</body></html>
